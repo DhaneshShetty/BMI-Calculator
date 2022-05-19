@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -133,7 +134,7 @@ fun MainPage(navController: NavController,viewModel:MainViewModel) {
             shape = RoundedCornerShape(percent = 20),
             colors = ButtonDefaults.buttonColors(backgroundColor = red, contentColor = Color.White),
         ) {
-            Text("Calculate BMI",Modifier.padding(8.dp))
+            Text("Calculate BMI",Modifier.padding(8.dp),style= MaterialTheme.typography.body1)
         }
     }
 
@@ -264,12 +265,18 @@ fun ResultScreen(viewModel: MainViewModel) {
                 .size(200.dp)
                 .padding(4.dp)
         )
+        LinearProgressIndicator(progress =
+        when(viewModel.state){
+            MainViewModel.BmiCategories.Normal->0.5f
+            MainViewModel.BmiCategories.Overweight->0.75f
+            MainViewModel.BmiCategories.Underweight->0.25f }
+            , color = colorText, modifier = Modifier.padding(8.dp).height(40.dp).fillMaxWidth().clip(RoundedCornerShape(10)))
         Surface(
-            shape = MaterialTheme.shapes.small, color = red, modifier = Modifier
+            shape = RoundedCornerShape(10), color = red, modifier = Modifier
                 .align(
                     Alignment.CenterHorizontally
                 )
-                .padding(vertical = 8.dp)
+                .padding(8.dp)
                 .fillMaxWidth(),
             elevation = (8).dp
         ) {
@@ -312,7 +319,10 @@ fun ResultScreen(viewModel: MainViewModel) {
                     textAlign = Center
                 )
             }
+
         }
+
+
     }
 }
 
